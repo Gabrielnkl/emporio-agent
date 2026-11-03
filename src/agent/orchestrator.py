@@ -39,7 +39,7 @@ def respond(
         for function_call in function_calls:
             try:
                 arguments = json.loads(function_call.arguments)
-                tool_output = call_tool(function_call.name, arguments)
+                tool_output = call_tool(function_call.name, arguments, client)
             except Exception:
                 tool_output = "Não consegui concluir essa consulta. Encaminhe para a equipe confirmar."
             input_items.append(

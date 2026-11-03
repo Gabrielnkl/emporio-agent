@@ -3,7 +3,7 @@
 from typing import Any
 
 from src.database.repository import StoreRepository
-from src.knowledge.retrieval import search_policy
+from src.knowledge.retrieval import retrieve_policy
 
 _store = StoreRepository()
 
@@ -50,7 +50,7 @@ TOOLS: list[dict[str, Any]] = [
 ]
 
 
-def call_tool(name: str, arguments: dict[str, Any]) -> str:
+def call_tool(name: str, arguments: dict[str, Any], openai_client: Any) -> str:
     """Dispatch a model function call to local, read-only application code."""
     if name == "search_catalog":
         return _store.search_catalog(arguments["query"])
@@ -61,6 +61,5 @@ def call_tool(name: str, arguments: dict[str, Any]) -> str:
             return "Para consultar, preciso do número do pedido e do nome completo do titular."
         return _store.lookup_order(order_number, full_name)
     if name == "search_store_policies":
-        answer = search_policy(arguments["question"])
-        return answer or "Não encontrei uma regra da loja que responda a essa pergunta. Encaminhe para a equipe confirmar."
+        return retrieve_policy(arguments["question"], openai_client)
     raise ValueError(f"Unknown tool: {name}")

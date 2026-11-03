@@ -4,3 +4,4 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 Desafio Técnico AI Engineer 2026/
+/data/chroma/
