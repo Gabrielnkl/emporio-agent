@@ -4,12 +4,11 @@ Protótipo em Python de um agente conversacional para apoiar o atendimento da lo
 
 ## Configuração e execução
 
-Requisitos: Python 3.10+ e uma chave da API da OpenAI.
+Requisitos: Python 3.10+, [`uv`](https://docs.astral.sh/uv/) e uma chave da API da OpenAI.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv venv .venv
+uv pip install --python .venv/bin/python -r requirements.txt
 cp .env.example .env
 # Edite .env e adicione sua chave da API
 python -m src.knowledge.ingestion
