@@ -21,9 +21,9 @@ python -m src.main
 
 - **OpenAI Agents SDK**: um agente especializado atende em português e escolhe as ferramentas conforme a solicitação. O SDK executa o ciclo de chamadas ao modelo e às ferramentas.
 - **Function tools** em `src/agent/tools.py`: `search_catalog`, `check_order` e `search_store_policies`. O prompt determina quando consultar cada fonte e impede que o modelo invente dados dinâmicos.
-- **Dados**: `src/database/repository.py` lê os CSVs diretamente usando a biblioteca padrão. Os pedidos exigem número e nome completo do titular.
+- **Dados**: `src/database/connection.py` lê os CSVs usando a biblioteca padrão; `src/database/models.py` mapeia as linhas para registros tipados; e `src/database/repository.py` implementa as consultas. Os pedidos exigem número e nome completo do titular.
 - **Histórico**: fica em memória durante a sessão CLI e é descartado ao sair. Não há banco de dados nem armazenamento remoto de conversa.
-- **Políticas**: respostas curadas a partir de `data/policies.pdf`, sem embeddings. Para o pequeno conjunto de regras deste desafio, essa abordagem é simples de auditar. Uma evolução poderia extrair e indexar o PDF e usar retrieval para documentos maiores.
+- **Políticas**: `src/knowledge/retrieval.py` seleciona respostas curadas a partir de `data/policies.pdf`, sem embeddings. Para o pequeno conjunto de regras deste desafio, essa abordagem é simples de auditar. Uma evolução poderia extrair e indexar o PDF e usar retrieval para documentos maiores.
 
 Escolhi o Agents SDK em vez de implementar um loop de function calling manual: ele fornece uma unidade clara de agente, ferramentas tipadas e execução do ciclo, enquanto as consultas e regras continuam no código local. O modelo melhora a interpretação de linguagem natural e a formulação da resposta; fontes estruturadas continuam sendo responsáveis por preço, estoque e pedidos.
 

@@ -2,7 +2,8 @@
 
 from agents import function_tool
 
-from src.database.repository import StoreRepository, search_policy
+from src.database.repository import StoreRepository
+from src.knowledge.retrieval import search_policy
 
 _store = StoreRepository()
 
