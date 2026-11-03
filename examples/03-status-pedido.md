@@ -6,6 +6,6 @@
 
 **Cliente:** Lucas Mendes da Silva.
 
-**Empório:** O pedido 4 consta como entregue. Ele inclui um Yamaha C70 Nylon Natural. A previsão registrada era 22/12/2025 e o código de rastreio é BRQM7890123BR.
+**Empório:** O pedido 4 consta como entregue. Ele inclui um Giannini GF-3D Dreadnought Sunburst. A previsão registrada era 22/12/2025 e o código de rastreio é BRQM7890123BR.
 
 *O dataset fornecido registra o pedido como entregue; a previsão e o rastreio são os valores do arquivo.*
