@@ -19,13 +19,13 @@ python -m src.main
 
 ## Arquitetura
 
-- **OpenAI Agents SDK**: um agente especializado atende em português e escolhe as ferramentas conforme a solicitação. O SDK executa o ciclo de chamadas ao modelo e às ferramentas.
-- **Function tools** em `src/agent/tools.py`: `search_catalog`, `check_order` e `search_store_policies`. O prompt determina quando consultar cada fonte e impede que o modelo invente dados dinâmicos.
+- **OpenAI Python SDK + Responses API**: um agente especializado atende em português. `src/agent/orchestrator.py` executa o loop de function calling no código da aplicação: envia a mensagem e os schemas, despacha cada chamada local, e devolve os resultados ao modelo para formular a resposta.
+- **Function tools** em `src/agent/tools.py`: `search_catalog`, `check_order` e `search_store_policies`, descritas em JSON Schema com modo estrito. O prompt orienta quando consultar cada fonte e proíbe inventar dados dinâmicos.
 - **Dados**: `src/database/connection.py` lê os CSVs usando a biblioteca padrão; `src/database/models.py` mapeia as linhas para registros tipados; e `src/database/repository.py` implementa as consultas. Os pedidos exigem número e nome completo do titular.
-- **Histórico**: fica em memória durante a sessão CLI e é descartado ao sair. Não há banco de dados nem armazenamento remoto de conversa.
+- **Histórico**: fica em memória durante a sessão CLI e é descartado ao sair. As chamadas usam `store=False`; a aplicação envia o histórico necessário em cada turno.
 - **Políticas**: `src/knowledge/retrieval.py` seleciona respostas curadas a partir de `data/policies.pdf`, sem embeddings. Para o pequeno conjunto de regras deste desafio, essa abordagem é simples de auditar. Uma evolução poderia extrair e indexar o PDF e usar retrieval para documentos maiores.
 
-Escolhi o Agents SDK em vez de implementar um loop de function calling manual: ele fornece uma unidade clara de agente, ferramentas tipadas e execução do ciclo, enquanto as consultas e regras continuam no código local. O modelo melhora a interpretação de linguagem natural e a formulação da resposta; fontes estruturadas continuam sendo responsáveis por preço, estoque e pedidos.
+Escolhi o SDK principal da OpenAI e a Responses API em vez do Agents SDK para deixar o ciclo do agente visível e fácil de explicar: o projeto define os schemas das funções, despacha chamadas conhecidas e devolve seus resultados. Isso reduz uma camada de abstração num protótipo pequeno. O modelo melhora a interpretação de linguagem natural e a formulação da resposta; fontes estruturadas continuam sendo responsáveis por preço, estoque e pedidos. Esse loop segue a documentação oficial de [function calling](https://developers.openai.com/api/docs/guides/function-calling).
 
 ## Limitações e suposições
 
@@ -42,4 +42,4 @@ As conversas de demonstração estão em [`examples/`](examples/). Elas cobrem b
 
 ## Uso de assistente de código
 
-O protótipo foi desenvolvido com auxílio do OpenAI Codex. Usei o assistente para estruturar a aplicação, integrar ferramentas com o Agents SDK e elaborar a documentação. As consultas continuam explícitas no código e os dados de origem são os materiais fornecidos no desafio.
+O protótipo foi desenvolvido com auxílio do OpenAI Codex. Usei o assistente para estruturar a aplicação, integrar ferramentas com a Responses API e elaborar a documentação. As consultas continuam explícitas no código e os dados de origem são os materiais fornecidos no desafio.

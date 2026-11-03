@@ -1,1 +1,1 @@
-"""OpenAI Agents SDK integration."""
+"""OpenAI Responses API agent implementation."""
